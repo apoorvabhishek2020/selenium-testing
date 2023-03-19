@@ -1,5 +1,7 @@
 from django.test import TestCase
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
 
 
 class FunctionalTestCase(TestCase):
@@ -26,9 +28,17 @@ class FunctionalTestCase(TestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_homepage(self):
-        self.browser.get("http://localhost:8000")
-        self.browser.get_screenshot_as_file("ss.png")
+    def test_amazon_login(self):
+        self.browser.get("https://auth.geeksforgeeks.org/")
+        self.browser.get_screenshot_as_file("enteruser.png")
         print(self.browser.title)
-        # assert self.browser.page_source.find('install')
-        self.assertIn('install', self.browser.page_source)
+        email=self.browser.find_element(By.ID,'luser')
+        email.send_keys('xyz@gmail.com')
+        pwd=self.browser.find_element(By.ID,'password')
+        pwd.send_keys('xyz12345')
+        self.browser.find_element(By.CLASS_NAME,"signin-button").click();
+        time.sleep(15)
+        self.browser.get_screenshot_as_file("enterpassword.png")
+
+
+
